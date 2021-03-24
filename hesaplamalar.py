@@ -37,12 +37,6 @@ def ortanca(data):
         return data[medyan]
 
 
-def getTurkishLiraVerileri(turkishLiraData):
-    # print(aritmetikOrtalama(turkishLiraData))
-    # print(ortanca(turkishLiraData))
-    print(tepeDeger(turkishLiraData))
-
-
 def tepeDeger(testList):
     dataSozluk = {}
     durum = True
@@ -69,6 +63,16 @@ def tepeDeger(testList):
     return tekrarEdenler
 
 
+def degisimAraligi(data):
+    return max(data) - min(data)
+
+
+def getTurkishLiraVerileri(turkishLiraData):
+    # print(aritmetikOrtalama(turkishLiraData))
+    # print(ortanca(turkishLiraData))
+    print(tepeDeger(turkishLiraData))
+
+
 def main():
     data = readDataFromExcel()
 
@@ -76,7 +80,9 @@ def main():
     dataUSD = convertToList(data["US dollar"])
     dataRuble = convertToList(data["Russian Rouble"])
 
-    deneme = convertToList(data["ornek3"])
+    deneme = convertToList(data["ornek2"])
+
+    print(degisimAraligi(deneme))
 
     # getTurkishLiraVerileri(dataLira)
 

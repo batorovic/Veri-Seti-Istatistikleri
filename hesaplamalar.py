@@ -47,8 +47,8 @@ def tepeDeger(testList):
         except:
             dataSozluk[item] = 1
 
-    sortedDataSozluk = dict(sorted(dataSozluk.items(),
-                                   key=lambda item: item[1], reverse=True))
+    sortedDataSozluk = dict(
+        sorted(dataSozluk.items(), key=lambda item: item[1], reverse=True))
 
     tekrarEdenler = []
     onceki = 0
@@ -64,7 +64,18 @@ def tepeDeger(testList):
 
 
 def degisimAraligi(data):
-    return max(data) - min(data)
+    maximum = 0
+    minimum = data[0]
+
+    for item in data:
+        if maximum < item:
+            maximum = item
+        elif minimum > item:
+            minimum = item
+
+    print(maximum, minimum, ' max ve min', max(data), min(data))
+    # return max(data) - min(data)
+    return maximum - minimum
 
 
 def getTurkishLiraVerileri(turkishLiraData):

@@ -1,5 +1,6 @@
 import pandas as pd
 import math
+import matplotlib.pyplot as plt
 
 
 def readDataFromExcel():
@@ -138,10 +139,18 @@ def ceyreklerAcikligi(data):
     return q3 - q1
 
 
+def boxPlot():
+    df = readDataFromExcel()
+    df.boxplot(column=["Turkish lira", "US dollar", "Russian Rouble"])
+
+    plt.show()
+
+
 def getTurkishLiraVerileri(turkishLiraData):
     # print(aritmetikOrtalama(turkishLiraData))
     # print(ortanca(turkishLiraData))
-    print(tepeDeger(turkishLiraData))
+    # print(tepeDeger(turkishLiraData))
+    pass
 
 
 def main():
@@ -153,7 +162,7 @@ def main():
 
     deneme = convertToList(data["ornek3"])
 
-    print(ceyreklerAcikligi(deneme))
+    boxPlot()
 
     # getTurkishLiraVerileri(dataLira)
 

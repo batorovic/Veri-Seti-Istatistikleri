@@ -32,12 +32,12 @@ def ortanca(data):
     data = sorted(data)
     if listeBoyutu % 2 == 0:
         medyan = (int)(listeBoyutu / 2) - 1
-        print("2 ye bolunuyor")
-        print((data[medyan], data[medyan + 1]))
+        # print("2 ye bolunuyor")
+        # print((data[medyan], data[medyan + 1]))
         return (data[medyan] + data[medyan + 1]) / 2
 
     else:
-        print("2 ye bolunmez")
+        # print("2 ye bolunmez")
         medyan = (int)(listeBoyutu/2)
         return data[medyan]
 
@@ -65,7 +65,8 @@ def tepeDeger(testList):
             if(sortedDataSozluk[item] >= onceki):
                 onceki = sortedDataSozluk[item]
                 tekrarEdenler.append(item)
-    return tekrarEdenler
+    tekrarEdenler = sorted(tekrarEdenler)
+    return ",".join(str(item) for item in tekrarEdenler)
 
 
 def degisimAraligi(data):
@@ -78,7 +79,7 @@ def degisimAraligi(data):
         elif minimum > item:
             minimum = item
 
-    print(maximum, minimum, ' max ve min', max(data), min(data))
+    #print(maximum, minimum, ' max ve min', max(data), min(data))
     # return max(data) - min(data)
     return maximum - minimum
 
@@ -146,11 +147,30 @@ def boxPlot():
     plt.show()
 
 
-def getTurkishLiraVerileri(turkishLiraData):
-    # print(aritmetikOrtalama(turkishLiraData))
-    # print(ortanca(turkishLiraData))
-    # print(tepeDeger(turkishLiraData))
-    pass
+def getTurkishLiraVerileri(data, gelenDataAdi):
+
+    return '{} {} {} {} {} {} {}  {} {}  {} {} {} {}  {} {}  {} {}  {} {} {} {} '.format(
+        "\n12/02/2021 - 01/09/2020 tarihleri arasinda Euro'nun", gelenDataAdi, "karsiliginda degerine gore oranlar hesaplanmistir.",
+        '\nOrtalama : ', aritmetikOrtalama(data),
+        "\nOrtanca : ", ortanca(data),
+        "\nTepe Degeri : ", tepeDeger(data),
+        "\nDegisim Araligi : ", degisimAraligi(
+            data),
+        "\nOrtalama Mutlak Sapma : ",
+        ortalamaMutlakSapma(data),
+        "\nVaryans : ", varyans(
+            data),
+        "\nStandart sapma : ", standartSapma(
+            data),
+        "\nDegisim Kat sayisi : ", degisimKatSayisi(
+            data),
+        "\nCeyrekler Arasi acikligi : ", ceyreklerAcikligi(data))
+
+
+def writeToTxt(f, data, gelenDataAdi):
+
+    f.write(getTurkishLiraVerileri(data, gelenDataAdi))
+    f.write("\n")
 
 
 def main():
@@ -160,11 +180,15 @@ def main():
     dataUSD = convertToList(data["US dollar"])
     dataRuble = convertToList(data["Russian Rouble"])
 
-    deneme = convertToList(data["ornek3"])
+    f = open("Hesaplanan Veriler.txt", "w")
+
+    writeToTxt(f, dataLira, "Turk Lirasi")
+    writeToTxt(f, dataUSD, "USD")
+    writeToTxt(f, dataRuble, "Rus Rublesi")
+
+    f.close()
 
     boxPlot()
-
-    # getTurkishLiraVerileri(dataLira)
 
 
 if __name__ == "__main__":

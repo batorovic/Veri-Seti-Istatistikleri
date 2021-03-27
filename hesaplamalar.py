@@ -147,7 +147,7 @@ def boxPlot():
     plt.show()
 
 
-def getTurkishLiraVerileri(data, gelenDataAdi):
+def getParaDegeriVerileri(data, gelenDataAdi):
 
     return '{} {} {} {} {} {} {}  {} {}  {} {} {} {}  {} {}  {} {}  {} {} {} {} '.format(
         "\n12/02/2021 - 01/09/2020 tarihleri arasinda Euro'nun", gelenDataAdi, "karsiliginda degerine gore oranlar hesaplanmistir.",
@@ -169,7 +169,7 @@ def getTurkishLiraVerileri(data, gelenDataAdi):
 
 def writeToTxt(f, data, gelenDataAdi):
 
-    f.write(getTurkishLiraVerileri(data, gelenDataAdi))
+    f.write(getParaDegeriVerileri(data, gelenDataAdi))
     f.write("\n")
 
 

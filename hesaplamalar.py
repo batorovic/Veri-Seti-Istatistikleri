@@ -2,6 +2,8 @@ import pandas as pd
 import math
 import matplotlib.pyplot as plt
 
+# len kullanmak yasak.
+
 
 def readDataFromExcel():
     df = pd.read_excel(
@@ -9,8 +11,20 @@ def readDataFromExcel():
     return df
 
 
+def listeninUzunlugu(data):
+    length = 0
+
+    for item in data:
+        length += 1
+    return length
+
+
 def convertToList(data):
     liste = []
+
+    # if not liste:
+    #    print("1")
+
     for item in data:
         if item == "":
             break
@@ -23,12 +37,11 @@ def aritmetikOrtalama(data):
     toplam = 0
     for item in data:
         toplam += item
-    return float("{:.2f}".format(toplam / len(data)))
+    return float("{:.2f}".format(toplam / listeninUzunlugu(data)))
 
 
 def ortanca(data):
-    listeBoyutu = len(data)
-    # ???? sorted olcak mı bilmiyorum
+    listeBoyutu = listeninUzunlugu(data)
     data = sorted(data)
     if listeBoyutu % 2 == 0:
         medyan = (int)(listeBoyutu / 2) - 1
@@ -65,8 +78,11 @@ def tepeDeger(testList):
             if(sortedDataSozluk[item] >= onceki):
                 onceki = sortedDataSozluk[item]
                 tekrarEdenler.append(item)
+
     tekrarEdenler = sorted(tekrarEdenler)
-    return ",".join(str(item) for item in tekrarEdenler)
+
+    # return tekrarEdenler
+    return ", ".join(str(item) for item in tekrarEdenler)
 
 
 def degisimAraligi(data):
@@ -79,8 +95,6 @@ def degisimAraligi(data):
         elif minimum > item:
             minimum = item
 
-    #print(maximum, minimum, ' max ve min', max(data), min(data))
-    # return max(data) - min(data)
     return maximum - minimum
 
 
@@ -95,7 +109,7 @@ def ortalamaMutlakSapma(data):
         else:
             toplam += (dataAritmetikOrtalama - item)
 
-    return float("{:.3f}".format(toplam / len(data)))
+    return float("{:.3f}".format(toplam / listeninUzunlugu(data)))
 
 
 def varyans(data):
@@ -104,11 +118,10 @@ def varyans(data):
     for item in data:
         toplam = toplam + (item - dataAritmetikOrtalama) ** 2
 
-    return float("{:.4f}".format((toplam) / (len(data) - 1)))
+    return float("{:.4f}".format((toplam) / (listeninUzunlugu(data) - 1)))
 
 
 def standartSapma(data):
-    # sqrt kullanilamayabilir !
     return float("{:.2f}".format(math.sqrt(varyans(data))))
 
 
@@ -118,20 +131,20 @@ def degisimKatSayisi(data):
 
 def ceyreklerAcikligi(data):
     data = sorted(data)
-    elemanSayisi = len(data)
+    elemanSayisi = listeninUzunlugu(data)
 
     q1Terim = (elemanSayisi + 1) / 4
     q3Terim = 3 * (elemanSayisi + 1) / 4
     q1 = 0
     q3 = 0
 
-    if q1Terim.is_integer() == False:
+    if q1Terim % 1 != 0:
         n = int(q1Terim)
         q1 = (data[n] + data[n - 1]) / 2
     else:
         q1 = data[int(q1Terim) - 1]
 
-    if q3Terim.is_integer() == False:
+    if q3Terim % 1 != 0:
         n = int(q3Terim)
         q3 = (data[n] + data[n - 1]) / 2
     else:
@@ -140,17 +153,25 @@ def ceyreklerAcikligi(data):
     return q3 - q1
 
 
-def boxPlot():
+def boxPlot(sutunAdlari):
     df = readDataFromExcel()
-    df.boxplot(column=["Turkish lira", "US dollar", "Russian Rouble"])
+    for item in sutunAdlari:
+        plt.figure(item)
 
+        plt.boxplot(convertToList(df[item]))
+
+        titleText = item + "  BOXPLOT ÇİZİMİ"
+        titleObj = plt.title(titleText)
+
+        plt.setp(titleObj, color='r')
+        # plt.savefig(item)
     plt.show()
 
 
-def getParaDegeriVerileri(data, gelenDataAdi):
+def getParaDegeriVerileri(data, gelenDataAdi, tarihler):
 
-    return '{} {} {} {} {} {} {}  {} {}  {} {} {} {}  {} {}  {} {}  {} {} {} {} '.format(
-        "\n12/02/2021 - 01/09/2020 tarihleri arasinda Euro'nun", gelenDataAdi, "karsiliginda degerine gore oranlar hesaplanmistir.",
+    return '{}{} {} {} {} {} {} {} {}  {} {}  {} {} {} {}  {} {}  {} {}  {} {} {} {} '.format(
+        "\n", tarihler, "tarihleri arasinda Euro'nun", gelenDataAdi, "karsiliginda degerine gore oranlar hesaplanmistir.",
         '\nOrtalama : ', aritmetikOrtalama(data),
         "\nOrtanca : ", ortanca(data),
         "\nTepe Degeri : ", tepeDeger(data),
@@ -167,10 +188,17 @@ def getParaDegeriVerileri(data, gelenDataAdi):
         "\nCeyrekler Arasi acikligi : ", ceyreklerAcikligi(data))
 
 
-def writeToTxt(f, data, gelenDataAdi):
+def writeToTxt(f, data, gelenDataAdi, tarihler):
 
-    f.write(getParaDegeriVerileri(data, gelenDataAdi))
+    f.write(getParaDegeriVerileri(data, gelenDataAdi, tarihler))
     f.write("\n")
+
+
+def getIlkVeSonTarihler(dataPeriod):
+
+    dataPeriod = dataPeriod.dt.strftime("%d/%m/%y")
+
+    return " - ".join(str(item) for item in (dataPeriod.iloc[0], dataPeriod.iloc[-1]))
 
 
 def main():
@@ -182,13 +210,15 @@ def main():
 
     f = open("Hesaplanan Veriler.txt", "w")
 
-    writeToTxt(f, dataLira, "Turk Lirasi")
-    writeToTxt(f, dataUSD, "USD")
-    writeToTxt(f, dataRuble, "Rus Rublesi")
+    tarihler = getIlkVeSonTarihler(data['Period - Unit'])
+
+    writeToTxt(f, dataLira, "Turk Lirasi", tarihler)
+    writeToTxt(f, dataUSD, "USD", tarihler)
+    writeToTxt(f, dataRuble, "Rus Rublesi", tarihler)
 
     f.close()
 
-    boxPlot()
+    boxPlot(["Turkish lira", "US dollar", "Russian Rouble"])
 
 
 if __name__ == "__main__":

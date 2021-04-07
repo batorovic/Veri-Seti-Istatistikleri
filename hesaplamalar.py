@@ -1,13 +1,39 @@
-import pandas as pd
-import math
-import matplotlib.pyplot as plt
+r"""
+Python 3.9.0 versiyonu kullanilmistir.
 
-# len kullanmak yasak.
+Excelden veri okumak icin pandas,
+Sqrt fonksiyonunu kullanabilmek serbest oldugun icin math,
+Boxplot cizdirmek icin matploblib
+kütüphaneleri kullanilmistir.
+
+Kodun calismasi icin asagidaki kutuphaneleri pip ile yuklemeniz gerekmektedir.
+
+pip install pandas
+pip install openpyxl
+pip install numpy
+pip install matplotlib
+
+Eger pip hata verirse:
+
+Ortam degiskenleri -> Sistem Degiskenleri -> Path
+
+Path kismina: C: \Users\{kullaniciAdiniz}\AppData\Local\Programs\Python\Python39\Scripts ekleyiniz.
+
+Scripti cmd uzerinden calistirmak icin: 
+
+Dosyayi cikardiginiz yerde cmd aciniz. Ve asagidaki satiri yaziniz.
+
+~ python 191213086_Batuhan_Kutluay.py
+"""
+
+import matplotlib.pyplot as plt
+import math
+import pandas as pd
 
 
 def readDataFromExcel():
-    df = pd.read_excel(
-        r'C:\Users\BATUHAN\Desktop\İstatistikOdevi\veriSeti.xlsx', keep_default_na=False)
+    df = pd.read_excel(r'veriSeti.xlsx', keep_default_na=False)
+    # Excel dosyasini scriptin oldugu yerden direkt okumaktadir.
     return df
 
 
@@ -21,9 +47,6 @@ def listeninUzunlugu(data):
 
 def convertToList(data):
     liste = []
-
-    # if not liste:
-    #    print("1")
 
     for item in data:
         if item == "":
@@ -45,12 +68,10 @@ def ortanca(data):
     data = sorted(data)
     if listeBoyutu % 2 == 0:
         medyan = (int)(listeBoyutu / 2) - 1
-        # print("2 ye bolunuyor")
-        # print((data[medyan], data[medyan + 1]))
+
         return (data[medyan] + data[medyan + 1]) / 2
 
     else:
-        # print("2 ye bolunmez")
         medyan = (int)(listeBoyutu/2)
         return data[medyan]
 
@@ -58,7 +79,6 @@ def ortanca(data):
 def tepeDeger(testList):
     dataSozluk = {}
     durum = True
-    # sozluk olarak sekil verme.
     for item in testList:
         try:
             dataSozluk[item] += 1
@@ -72,7 +92,7 @@ def tepeDeger(testList):
     onceki = 0
 
     if list(sortedDataSozluk.values())[0] == 1:
-        return "Tepe deger yok"
+        return "Tepe degeri yok"
     else:
         for item in sortedDataSozluk:
             if(sortedDataSozluk[item] >= onceki):
@@ -81,7 +101,6 @@ def tepeDeger(testList):
 
     tekrarEdenler = sorted(tekrarEdenler)
 
-    # return tekrarEdenler
     return ", ".join(str(item) for item in tekrarEdenler)
 
 
@@ -160,11 +179,11 @@ def boxPlot(sutunAdlari):
 
         plt.boxplot(convertToList(df[item]))
 
-        titleText = item + "  BOXPLOT ÇİZİMİ"
+        titleText = item + " BOXPLOT ÇİZİMİ"
         titleObj = plt.title(titleText)
 
         plt.setp(titleObj, color='r')
-        # plt.savefig(item)
+        plt.savefig(item)
     plt.show()
 
 
@@ -219,6 +238,8 @@ def main():
     f.close()
 
     boxPlot(["Turkish lira", "US dollar", "Russian Rouble"])
+
+    print("Hesaplamalar txt olarak scriptin calistirildigi yere kaydedilmistir.")
 
 
 if __name__ == "__main__":

@@ -24,7 +24,7 @@ Ceyrekler Arasi acikligi :  0.03390000000000004
 12/02/21 - 01/09/20 tarihleri arasinda Euro'nun Rus Rublesi karsiliginda degerine gore oranlar hesaplanmistir. 
 Ortalama :  90.53 
 Ortanca :  90.5157  
-Tepe Degeri :  Tepe deger yok  
+Tepe Degeri :  Tepe degeri yok  
 Degisim Araligi :  5.677500000000009 
 Ortalama Mutlak Sapma :  0.979  
 Varyans :  1.3813  

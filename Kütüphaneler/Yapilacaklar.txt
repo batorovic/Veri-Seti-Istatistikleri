@@ -1,3 +1,0 @@
-C:\Users\BATUHAN\AppData\Local\Programs\Python\Python39\Scripts
-
-edit enviroment variables * > path kısmına eklencek burası

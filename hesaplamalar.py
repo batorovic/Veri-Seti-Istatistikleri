@@ -23,7 +23,7 @@ Scripti cmd uzerinden calistirmak icin:
 
 Dosyayi cikardiginiz yerde cmd aciniz. Ve asagidaki satiri yaziniz.
 
-~ python 191213086_Batuhan_Kutluay.py
+~ python hesaplamalar.py
 """
 
 import matplotlib.pyplot as plt
